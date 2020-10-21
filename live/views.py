@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import Service
 from django.views.generic import ListView
 import json
+from django.http import JsonResponse
 
 # Create your views here.
 # def home(request):
@@ -19,3 +20,6 @@ class InfoListView(ListView):
         context["qs_json"] = json.dumps(list(Service.objects.values()))   
         return context
 
+def data_json(request):
+	data = list(Service.objects.values())
+	return JsonResponse(data, safe=False)
