@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<input id="search_box" class="form-control mb-3" placeholder="type here to search.." />
+    <div id="box">
+        {% for item in object_list %}
+            <b><a href="{{item.url}}" style="color: black">{{item.name}}</a></b><br>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+	<script type="text/javascript">
+		const data = '{{qs_json}}'
+	    console.log(data)
+
+	    const rdata = JSON.parse(data.replace(/&quot;/g, '"'))
+	    console.log(rdata)
+
+	    const input = document.getElementById('search_box')
+	    console.log(input)
+
+	    let filteredArr = []
+
+	    if(input){
+		    input.addEventListener('keyup', function(e){
+		        box.innerHTML = ""
+		        filteredArr = rdata.filter(info=> info['name'].includes(e.target.value))
+		        console.log(filteredArr)
+		        if (filteredArr.length > 0){
+		            filteredArr.map(info=>{
+		                box.innerHTML += `<b><a href="${info['url']}" style="color: black">${info['name']}</a></b><br>`
+		            })
+		        } else {
+		            box.innerHTML = "<b>No results found...</b>"
+		        }
+		    })
+		}
+	</script>
+{% endblock scripts %}
